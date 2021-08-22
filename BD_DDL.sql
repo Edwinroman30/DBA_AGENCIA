@@ -4,7 +4,8 @@ USE BD_Transporte;
 
 
 -----------------------------------------DDL----------------------------------------------------------
-BEGIN TRAN  READUNCOMMITTED
+
+--MUCHOS DE LOS CAMPOS CLAVES SERÍAN MAS COMODOS MANEJARLOS AUTOINCREMENTABLES.
 
 CREATE TABLE Tb_Pais(
 	id_pais int PRIMARY KEY  NOT NULL,
@@ -27,9 +28,22 @@ CREATE TABLE Tb_Cliente(
 );
 GO
 
+CREATE TABLE Tb_Historico_Cliente(
+	id_historicoCliente INT PRIMARY KEY IDENTITY (1,1), 
+	id_cliente INT NOT NULL,
+	username varchar(50) NOT null,
+	pass varchar(50) NOT null,
+	cedula char(13) NOT NULL,
+	nombre varchar(25) NOT NULL,
+	prim_apellido varchar(25) NOT NULL,
+	seg_apellido varchar(25) NOT NULL,
+	id_pais int NOT NULL,
+	fechaIngreso DATETIME DEFAULT GETDATE()
+);
+GO
 
 
-CREATE TABLE Tb_tipo(
+CREATE TABLE Tb_tipoTarifa(
 	id_tipoTarifa INT NOT NULL PRIMARY KEY,
 	descripcion varchar(75) NOT NULL
 );
@@ -144,5 +158,3 @@ CREATE TABLE Tb_TrackingEnvios
 	CONSTRAINT Tracking_envio FOREIGN KEY (id_rentaEnvio) REFERENCES Tb_RentaEnvios (id_rentaEnvio)
 );
 GO
-
-COMMIT
