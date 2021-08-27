@@ -33,7 +33,6 @@ VALUES
 (7,'Pablo099@gmail.com','PA3blo','402-8325483-2','Pablo'  ,'Frias','Gomez',5),
 (8,'Johandri00@gmail.com','pfis2','402-4486519-9','Johandri','Roman','Garcias',3),
 (9, 'PerezRosario@gmail.com', '03dwad','402-8234316-7','Magalis', 'Perez','Rosario',6);
-
 --------------------------------------------------------------------------------------------------
 
 INSERT INTO Tb_tipoTarifa
@@ -55,6 +54,7 @@ GO
 
 --TARIFAS DE VIAJES (TRANSPORTE)
 INSERT INTO Tb_tarifa
+([id_tarifa],[id_modalidadMonto],[id_tipoTarifa],[descripcion],[monto],[fecha_expiracion])
 VALUES
 (1,1,2,'Tours turísticos de STG - Sámana',8000.00,'2022-01-01'), -- ES UNA TARIFA ESTANDAR QUE PERTENECE A LOS TRANSPORTES.
 (2,1,2,'Viajes Emergentes, salida rapida en STG',3400.00,'2022-01-01'),
@@ -68,6 +68,7 @@ GO
 
 --TARIFAS DE ENVIOS (TRANSPORTE)
 INSERT INTO Tb_tarifa
+([id_tarifa],[id_modalidadMonto],[id_tipoTarifa],[descripcion],[monto],[fecha_expiracion])
 VALUES
 (9,1,1,'ON 24 Hours', 4000.00,'2022-01-01'), -- ES UNA TARIFA ESTANDAR QUE PERTENECE A LOS ENVIOS.
 (10,1,1,'Envios Emergentes, salida rapida!', 3400.00,'2022-01-01'),
@@ -110,10 +111,43 @@ VALUES
 
 --------------------------------------------------------------------------------------------------
 
-SELECT *
-FROM Tb_provincia;
 
-INSERT INTO Tb_provincia VALUES
+INSERT INTO Tb_ProvinciaOrigen VALUES
+    (1,'Azua')
+    ,(2,'Bahoruco')
+    ,(3,'Barahona')
+    ,(4,'Dajabón')
+    ,(5,'Distrito Nacional')
+    ,(6,'Duarte')
+    ,(7,'Elías Piña')
+    ,(8,'El Seibo')
+    ,(9,'Espaillat')
+    ,(10,'Hato Mayor')
+    ,(11,'Hermanas Mirabal')
+    ,(12,'Independencia')
+    ,(13,'La Altagracia')
+    ,(14,'La Romana')
+    ,(15,'La Vega')
+    ,(16,'María Trinidad Sánchez')
+    ,(17,'Monseñor Nouel')
+    ,(18,'Monte Cristi')
+    ,(19,'Monte Plata')
+    ,(20,'Pedernales')
+    ,(21,'Peravia')
+    ,(22,'Puerto Plata')
+    ,(23,'Samaná')
+    ,(24,'Sánchez Ramírez')
+    ,(25,'San Cristóbal')
+    ,(26,'San José de Ocoa')
+    ,(27,'San Juan')
+    ,(28,'San Pedro de Macorís')
+    ,(29,'Santiago')
+    ,(30,'Santiago Rodríguez')
+    ,(31,'Santo Domingo')
+    ,(32,'Valverde')
+GO
+
+INSERT INTO Tb_ProvinciaDestino VALUES
     (1,'Azua')
     ,(2,'Bahoruco')
     ,(3,'Barahona')
@@ -161,6 +195,7 @@ FROM Tb_tarifa
 
 
 INSERT INTO Tb_RentaEnvios
+([id_rentaEnvio],[id_servicioEnvios],[id_lugarOrigen],[id_lugarDestino],[id_tarifa],[id_cliente],[peso_paquete],[cedula_receptor],[firmadig_receptor],[fecha_envio])
 VALUES
 (1, 4, 31, 14, 14, 1, 8.37, '402-4325169-3', NULL, '2019-07-30'),
 (2, 4, 31, 15, 12, 1, 2.37, '402-4435169-3', NULL, '2020-04-11'),
@@ -177,12 +212,34 @@ VALUES
 (9, 1, 31, 31, 11, 5, 1.37, '402-4486519-9', NULL, '2021-07-02'),
 (10, 4, 31, 15, 12, 5, 2.37, '402-4435169-3', NULL, '2021-05-11');
 
+----------------------------------------------------------------------------------------------------
+
+SELECT id_rentaEnvio, SE.descripcion, Tb_ProvinciaOrigen.nomProvincia as [Origen], Tb_ProvinciaDestino.nomProvincia as [Destino], TF.descripcion, TF.monto, CONCAT(Tb_Cliente.nombre,' ',Tb_Cliente.prim_apellido) AS CLIENTE
+FROM Tb_RentaEnvios
+	INNER JOIN
+		Tb_ProvinciaOrigen  ON  Tb_ProvinciaOrigen.id_provOrigen = Tb_RentaEnvios.id_lugarOrigen
+	INNER JOIN
+		Tb_ProvinciaDestino  ON  Tb_ProvinciaDestino.id_provDestino = Tb_RentaEnvios.id_lugarDestino
+	INNER JOIN
+		Tb_ServiciosEnvios SE ON SE.id_serviciosEnvios =  Tb_RentaEnvios.id_servicioEnvios
+	INNER JOIN 
+		Tb_tarifa TF ON TF.id_tarifa = Tb_RentaEnvios.id_tarifa
+	INNER JOIN 
+			Tb_Cliente ON Tb_Cliente.id_cliente = Tb_RentaEnvios.id_cliente
+GO
+
+----------------------------------------------------------------------------------------------------
+
 
 SELECT *
 FROM Tb_TrackingEnvios
-
+SELECT *
+FROM Tb_RentaEnvios
 SELECT *
 FROM Tb_TrackingTranp
 
 SELECT *
 FROM Tb_Cliente
+
+SELECT *
+FROM Tb_Historico_Cliente
