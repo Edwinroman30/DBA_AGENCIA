@@ -212,6 +212,20 @@ VALUES
 (9, 1, 31, 31, 11, 5, 1.37, '402-4486519-9', NULL, '2021-07-02'),
 (10, 4, 31, 15, 12, 5, 2.37, '402-4435169-3', NULL, '2021-05-11');
 
+
+--CON ESTE REGISTRO VAMOS A PROBAR DE QUE EL SP_reporte_envios actualiza los datos de la tabla Tb_REPORTES,
+--ANTERIORMENTE ESTA TENIA SOLO DOS (2) ENVIOS EN 2021, AHORA LE AUMENTAREMOS UNO.
+INSERT INTO Tb_RentaEnvios
+VALUES
+(11, 4, 31, 15, 12, 5, 2.37, '402-4435169-3', NULL, '2021-05-12');
+
+
+----otro mas para la clienta 5 cecilia diaz
+INSERT INTO Tb_RentaEnvios
+VALUES
+(12, 4, 31, 15, 12, 5, 2.37, '402-4435169-3', NULL, '2021-08-12');
+
+
 ----------------------------------------------------------------------------------------------------
 
 SELECT id_rentaEnvio, SE.descripcion, Tb_ProvinciaOrigen.nomProvincia as [Origen], Tb_ProvinciaDestino.nomProvincia as [Destino], TF.descripcion, TF.monto, CONCAT(Tb_Cliente.nombre,' ',Tb_Cliente.prim_apellido) AS CLIENTE

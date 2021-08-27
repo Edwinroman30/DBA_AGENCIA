@@ -12,21 +12,23 @@ AS
 BEGIN
 	
 	SET NOCOUNT ON;
-
+	
 	DECLARE @id_pais INT;
+	DECLARE @id_cliente INT, @username varchar(50), @pass varchar(50), @cedula char(13), @nombre varchar(30), @primAp varchar(30), @segAp varchar(30)  
+
 	SET @id_pais = NULL;
 
 	--DECLARAR EL CURSOR
 	DECLARE CIDPAISES CURSOR 
 	FOR 
-		SELECT  id_pais
+		SELECT  *
 		FROM inserted;
 
 	-- ABRIRLO
 	OPEN  CIDPAISES;
 
 	-- PRIMEROS VALORES
-	FETCH CIDPAISES INTO  @id_pais
+	FETCH CIDPAISES INTO  @id_cliente,@username,@pass,@cedula,@nombre,@primAp,@segAp,@id_pais
 	
 	WHILE (@@FETCH_STATUS = 0)
 	BEGIN 
@@ -34,10 +36,10 @@ BEGIN
 		IF @id_pais <> 1
 		BEGIN 
 			INSERT INTO Tb_Historico_Cliente
-			SELECT *,GETDATE() FROM inserted
+			VALUES (@id_cliente,@username,@pass,@cedula,@nombre,@primAp,@segAp,@id_pais,GETDATE())
 		END
 
-		FETCH CIDPAISES INTO  @id_pais
+		FETCH CIDPAISES INTO  @id_cliente,@username,@pass,@cedula,@nombre,@primAp,@segAp,@id_pais
 	 END
 
 	 --CERRARLO
@@ -84,24 +86,25 @@ BEGIN
 
 	
 	-- ABRIRLO
-	OPEN  CIDRENTAS;
+	OPEN  CIDRENTASENVIOS;
 
 	-- PRIMEROS VALORES
-	FETCH CIDRENTAS INTO @id_rentaEnvios
+	FETCH CIDRENTASENVIOS INTO @id_rentaEnvios
 
 	-- RECORRERLOS
 	WHILE (@@FETCH_STATUS = 0)
 	BEGIN 
-			INSERT INTO Tb_TrackingTranp
+			INSERT INTO Tb_TrackingEnvios
 			VALUES (@id_rentaEnvios, @longitud, @latitud, GETDATE()); --Esto INICIALIZARA EL Tracking, LUEGO DE AHÍ la inserciones proximas seran por el dispositivo hasta llegar a su --destino.
-		FETCH CIDRENTAS INTO @id_rentaEnvios
+		
+		FETCH CIDRENTASENVIOS INTO @id_rentaEnvios
 	END 
 	
 	--CERRARLO
-	CLOSE CIDRENTAS;
+	CLOSE CIDRENTASENVIOS;
 	
 	-- ELIMINARLO
-	DEALLOCATE CIDRENTAS;
+	DEALLOCATE CIDRENTASENVIOS;
 
 END
 GO
@@ -161,12 +164,3 @@ BEGIN
 END
 GO
 
---Crea	un	proceso	que	permita	registrar	una	tabla	un	reporte	de	la	cantidad	de	
---envíos,	por	cliente, por	año.	El	procedimiento	debe	incluir	gestión	
---transaccional	y	control	de	errores.
-
-SELECT Tb_RentaEnvios.id_cliente,Tb_Cliente.nombre ,COUNT(*) as [Cantidad de Envios], Year(fecha_envio) as [AÑO]
-FROM Tb_RentaEnvios
-INNER JOIN 
-Tb_Cliente ON Tb_Cliente.id_cliente = Tb_RentaEnvios.id_cliente
-GROUP BY Tb_RentaEnvios.id_cliente, Tb_Cliente.nombre,  Year(fecha_envio)

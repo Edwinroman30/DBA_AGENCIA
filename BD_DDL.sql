@@ -5,7 +5,7 @@ USE BD_Transporte;
 
 -----------------------------------------DDL----------------------------------------------------------
 
---MUCHOS DE LOS CAMPOS CLAVES SERÍAN MAS COMODOS MANEJARLOS AUTOINCREMENTABLES.
+--MUCHOS DE SLOS CAMPOS CLAVES SERÍAN MAS COMODOS MANEJARLOS AUTOINCREMENTABLES.
 
 CREATE TABLE Tb_Pais(
 	id_pais int PRIMARY KEY  NOT NULL,
