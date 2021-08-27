@@ -87,13 +87,20 @@ CREATE TABLE Tb_ServiciosEnvios
 GO
 
 
-CREATE TABLE Tb_provincia(
-    id_provincia INT NOT NULL
+CREATE TABLE Tb_ProvinciaOrigen(
+    id_provOrigen INT NOT NULL
     , nomProvincia VARCHAR(45) DEFAULT NULL
-    , CONSTRAINT Provincia_PK PRIMARY KEY CLUSTERED (id_provincia ASC)
+    , CONSTRAINT ProvinciaOrigen_PK PRIMARY KEY CLUSTERED (id_provOrigen ASC)
 )
 GO
 
+
+CREATE TABLE Tb_ProvinciaDestino(
+    id_provDestino INT NOT NULL
+    , nomProvincia VARCHAR(45) DEFAULT NULL
+    , CONSTRAINT ProvinciaDestino_PK PRIMARY KEY CLUSTERED (id_provDestino ASC)
+)
+GO
 
 
 -----------------------------------------------------------AUTOMINCR
@@ -111,8 +118,8 @@ CREATE TABLE Tb_RentaEnvios
 	fecha_envio datetime DEFAULT GETDATE(),
 	CONSTRAINT ServEnvio_tarifa FOREIGN KEY (id_tarifa) REFERENCES Tb_tarifa (id_tarifa),
 	CONSTRAINT RentaEnv_servicio FOREIGN KEY (id_servicioEnvios) REFERENCES Tb_ServiciosEnvios (id_serviciosEnvios),
-	CONSTRAINT RentaEnv_origen FOREIGN KEY (id_lugarOrigen) REFERENCES Tb_provincia (id_provincia),
-	CONSTRAINT RentaEnv_destino FOREIGN KEY (id_lugarDestino) REFERENCES Tb_provincia (id_provincia),
+	CONSTRAINT RentaEnv_origen FOREIGN KEY (id_lugarOrigen) REFERENCES Tb_ProvinciaOrigen (id_provOrigen),
+	CONSTRAINT RentaEnv_destino FOREIGN KEY (id_lugarDestino) REFERENCES Tb_ProvinciaDestino (id_provDestino),
 	CONSTRAINT RentaEnv_cliente FOREIGN KEY (id_cliente) REFERENCES Tb_Cliente (id_cliente)
 );
 GO
@@ -128,8 +135,8 @@ CREATE TABLE Tb_RentaTranporte
 	fecha_envio datetime DEFAULT GETDATE(),
 	CONSTRAINT ServTransp_tarifa FOREIGN KEY (id_tarifa) REFERENCES Tb_tarifa (id_tarifa),
 	CONSTRAINT RentaTran_servicio FOREIGN KEY (id_servicioTransporte) REFERENCES Tb_ServiciosTransp (id_servicioTransporte),
-	CONSTRAINT RentaTran_origen FOREIGN KEY (id_lugarOrigen) REFERENCES Tb_provincia (id_provincia),
-	CONSTRAINT RentaTran_destino FOREIGN KEY (id_lugarDestino) REFERENCES Tb_provincia (id_provincia),
+	CONSTRAINT RentaTran_origen FOREIGN KEY (id_lugarOrigen) REFERENCES Tb_ProvinciaOrigen (id_provOrigen),
+	CONSTRAINT RentaTran_destino FOREIGN KEY (id_lugarDestino) REFERENCES Tb_ProvinciaDestino (id_provDestino),
 	CONSTRAINT RentaTran_cliente FOREIGN KEY (id_cliente) REFERENCES Tb_Cliente (id_cliente)
 );
 GO
