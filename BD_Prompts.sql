@@ -14,15 +14,37 @@ BEGIN
 	SET NOCOUNT ON;
 
 	DECLARE @id_pais INT;
-	SET @id_pais = 1;
+	SET @id_pais = NULL;
 
-	SELECT @id_pais = id_pais FROM inserted;
+	--DECLARAR EL CURSOR
+	DECLARE CIDPAISES CURSOR 
+	FOR 
+		SELECT  id_pais
+		FROM inserted;
+
+	-- ABRIRLO
+	OPEN  CIDPAISES;
+
+	-- PRIMEROS VALORES
+	FETCH CIDPAISES INTO  @id_pais
 	
-	IF @id_pais <> 1
+	WHILE (@@FETCH_STATUS = 0)
 	BEGIN 
-		INSERT INTO Tb_Historico_Cliente
-		SELECT *,GETDATE() FROM inserted
-	END
+	
+		IF @id_pais <> 1
+		BEGIN 
+			INSERT INTO Tb_Historico_Cliente
+			SELECT *,GETDATE() FROM inserted
+		END
+
+		FETCH CIDPAISES INTO  @id_pais
+	 END
+
+	 --CERRARLO
+	CLOSE CIDPAISES;
+	
+	-- ELIMINARLO
+	DEALLOCATE CIDPAISES;
 
 END
 GO
@@ -41,24 +63,46 @@ BEGIN
 	
 	SET NOCOUNT ON;
 
-	DECLARE @id_rentaEnvio INT;
-	SET @id_rentaEnvio = NULL;
+	--ID A CAPTURAR PARA EL REGISTRO DE REFERENCIA A RENTATRANSPORTE
+	DECLARE @id_rentaEnvios INT;
+	SET @id_rentaEnvios = NULL;
 
+	--PARA SIMULAR EL REGISTRO DE LAS COORDENADAS.
 	DECLARE @longitud float;
 	DECLARE @latitud float;
 
+	--PARA SIMULAR EL REGISTRO DE LAS COORDENADAS.
 	SET @longitud = RAND()*2133;
 	SET @latitud = RAND()*2133;
 
 	
+	--DECLARAR EL CURSOR
+	DECLARE CIDRENTASENVIOS CURSOR 
+	FOR 
+		SELECT id_rentaEnvio
+			FROM inserted
 
-	SELECT @id_rentaEnvio = id_rentaEnvio
-	FROM inserted
+	
+	-- ABRIRLO
+	OPEN  CIDRENTAS;
 
-	INSERT INTO Tb_TrackingEnvios
-	VALUES (@id_rentaEnvio, @longitud, @latitud, GETDATE());
-	--Esto INICIALIZARA EL Tracking, LUEGO DE AHÍ la inserciones proximas seran por el dispositivo hasta llegar a su 
-	--destino.
+	-- PRIMEROS VALORES
+	FETCH CIDRENTAS INTO @id_rentaEnvios
+
+	-- RECORRERLOS
+	WHILE (@@FETCH_STATUS = 0)
+	BEGIN 
+			INSERT INTO Tb_TrackingTranp
+			VALUES (@id_rentaEnvios, @longitud, @latitud, GETDATE()); --Esto INICIALIZARA EL Tracking, LUEGO DE AHÍ la inserciones proximas seran por el dispositivo hasta llegar a su --destino.
+		FETCH CIDRENTAS INTO @id_rentaEnvios
+	END 
+	
+	--CERRARLO
+	CLOSE CIDRENTAS;
+	
+	-- ELIMINARLO
+	DEALLOCATE CIDRENTAS;
+
 END
 GO
 
@@ -73,25 +117,47 @@ BEGIN
 	
 	SET NOCOUNT ON;
 
-
+	--ID A CAPTURAR PARA EL REGISTRO DE REFERENCIA A RENTATRANSPORTE
 	DECLARE @id_rentaTransporte INT;
 	SET @id_rentaTransporte = NULL;
 
+	--PARA SIMULAR EL REGISTRO DE LAS COORDENADAS.
 	DECLARE @longitud float;
 	DECLARE @latitud float;
 
+	--PARA SIMULAR EL REGISTRO DE LAS COORDENADAS.
 	SET @longitud = RAND()*2133;
 	SET @latitud = RAND()*2133;
 
 	
+	--DECLARAR EL CURSOR
+	DECLARE CIDRENTASTRANSPORTE CURSOR 
+	FOR 
+		SELECT id_rentaTransporte
+			FROM inserted
 
-	SELECT @id_rentaTransporte = id_rentaTransporte
-	FROM inserted
+	
+	-- ABRIRLO
+	OPEN  CIDRENTASTRANSPORTE;
 
-	INSERT INTO Tb_TrackingTranp
-	VALUES (@id_rentaTransporte, @longitud, @latitud, GETDATE());
-	--Esto INICIALIZARA EL Tracking, LUEGO DE AHÍ la inserciones proximas seran por el dispositivo hasta llegar a su 
-	--destino.
+	-- PRIMEROS VALORES
+	FETCH CIDRENTASTRANSPORTE INTO @id_rentaTransporte
+
+	-- RECORRERLOS
+	WHILE (@@FETCH_STATUS = 0)
+	BEGIN 
+			INSERT INTO Tb_TrackingTranp
+			VALUES (@id_rentaTransporte, @longitud, @latitud, GETDATE()); --Esto INICIALIZARA EL Tracking, LUEGO DE AHÍ la inserciones proximas seran por el dispositivo hasta llegar a su --destino.
+		
+			FETCH CIDRENTASTRANSPORTE INTO @id_rentaTransporte
+	END 
+	
+	--CERRARLO
+	CLOSE CIDRENTASTRANSPORTE;
+	
+	-- ELIMINARLO
+	DEALLOCATE CIDRENTASTRANSPORTE;
+
 END
 GO
 
