@@ -132,7 +132,7 @@ CREATE TABLE Tb_RentaTranporte
 	id_lugarDestino INT NOT NULL,
 	id_tarifa INT NOT NULL,
 	id_cliente INT NOT NULL,
-	fecha_envio datetime DEFAULT GETDATE(),
+	fecha_transp datetime DEFAULT GETDATE(),
 	CONSTRAINT ServTransp_tarifa FOREIGN KEY (id_tarifa) REFERENCES Tb_tarifa (id_tarifa),
 	CONSTRAINT RentaTran_servicio FOREIGN KEY (id_servicioTransporte) REFERENCES Tb_ServiciosTransp (id_servicioTransporte),
 	CONSTRAINT RentaTran_origen FOREIGN KEY (id_lugarOrigen) REFERENCES Tb_ProvinciaOrigen (id_provOrigen),
