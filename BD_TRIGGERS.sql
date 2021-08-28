@@ -1,7 +1,7 @@
 --USE BD_Transporte;
 
 -----------------------------------------Mandatos----------------------------------------------------------
-
+/*PUNTO NUMERO #4*/
 --. Llevar	un	histórico	de	los	clientes	que	se	registran	y	son	extranjeros.		Utiliza	
 --Triggers.
 

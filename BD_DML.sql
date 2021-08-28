@@ -16,7 +16,8 @@ INSERT INTO Tb_Pais
 	(10, 'Francia', 'Frances/a',GETDATE());
 GO
 
-
+SELECT *
+FROM Tb_Pais;
 --------------------------------------------------------------------------------------------------
 
 INSERT INTO Tb_Cliente
@@ -33,6 +34,10 @@ VALUES
 (7,'Pablo099@gmail.com','PA3blo','402-8325483-2','Pablo'  ,'Frias','Gomez',5),
 (8,'Johandri00@gmail.com','pfis2','402-4486519-9','Johandri','Roman','Garcias',3),
 (9, 'PerezRosario@gmail.com', '03dwad','402-8234316-7','Magalis', 'Perez','Rosario',6);
+
+SELECT *
+FROM Tb_Cliente;
+
 --------------------------------------------------------------------------------------------------
 
 INSERT INTO Tb_tipoTarifa
@@ -41,6 +46,8 @@ VALUES
 (2, 'Tarifa para Transporte');
 GO
 
+SELECT *
+FROM Tb_tipoTarifa;
 --------------------------------------------------------------------------------------------------
 
 INSERT INTO Tb_modalidadMonto
@@ -48,7 +55,8 @@ VALUES
 (1, 'Tarifa Estandar'),
 (2, 'Tarifa Oferta');
 GO
-
+SELECT *
+FROM Tb_modalidadMonto;
 --------------------------------------------------------------------------------------------------
 
 
@@ -78,15 +86,9 @@ VALUES
 (14,2,1,'Envios Capital STG - La Romana',900.00,'2022-01-01'),--OFERTA
 (15,2,1,'Envios Capital STG - Santiago',1900.00,'2022-01-01');--OFERTA
 GO
+--------------------------------------------------------------------------------------------------
 
-SELECT *
-FROM Tb_tipoTarifa;
 
-SELECT *
-FROM Tb_modalidadMonto;
-
-SELECT *
-FROM Tb_tarifa;
 
 --------------------------------------------------------------------------------------------------
 SELECT *
@@ -184,16 +186,6 @@ GO
 
 --------------------------------------------------------------------------------------------------
 
-SELECT *
-FROM Tb_RentaEnvios
-
-SELECT *
-FROM Tb_ServiciosEnvios
-
-SELECT *
-FROM Tb_tarifa
-
-
 INSERT INTO Tb_RentaEnvios
 ([id_rentaEnvio],[id_servicioEnvios],[id_lugarOrigen],[id_lugarDestino],[id_tarifa],[id_cliente],[peso_paquete],[cedula_receptor],[firmadig_receptor],[fecha_envio])
 VALUES
@@ -220,13 +212,13 @@ VALUES
 (11, 4, 31, 15, 12, 5, 2.37, '402-4435169-3', NULL, '2021-05-12');
 
 
-----otro mas para la clienta 5 cecilia diaz
+----Otro mas para la clienta 5 cecilia diaz
 INSERT INTO Tb_RentaEnvios
 VALUES
 (12, 4, 31, 15, 12, 5, 2.37, '402-4435169-3', NULL, '2021-08-12');
 
 
-----------------------------------------------------------------------------------------------------
+----ENVIOS REALIZADO CON EL NOMBRE DE LOS CLIENTES Y UNA DESCRIPCIÓN DEL TIPO DE ENVIO--------------
 
 SELECT id_rentaEnvio, SE.descripcion, Tb_ProvinciaOrigen.nomProvincia as [Origen], Tb_ProvinciaDestino.nomProvincia as [Destino], TF.descripcion, TF.monto, CONCAT(Tb_Cliente.nombre,' ',Tb_Cliente.prim_apellido) AS CLIENTE
 FROM Tb_RentaEnvios
@@ -244,11 +236,23 @@ GO
 
 ----------------------------------------------------------------------------------------------------
 
+----INSERTANDO RENTA DE TRANSPORTES....
 
+INSERT INTO Tb_RentaTranporte
+VALUES
+(1,3,31,31,3,4,GETDATE()),
+(2,4,31,29,5,3,GETDATE()),
+(3,2,31,15,2,7,GETDATE()),
+(4,1,31,31,6,1,Getdate()),
+(5,4,31,14,7,9,Getdate()),
+(6,4,29,31,5,3,GETDATE());
+
+
+
+----------------------------------------------------------------------------------------------------
 SELECT *
 FROM Tb_TrackingEnvios
-SELECT *
-FROM Tb_RentaEnvios
+
 SELECT *
 FROM Tb_TrackingTranp
 
@@ -257,3 +261,40 @@ FROM Tb_Cliente
 
 SELECT *
 FROM Tb_Historico_Cliente
+
+SELECT *
+FROM Tb_RentaEnvios
+
+SELECT *
+FROM Tb_RentaTranporte
+
+SELECT *
+FROM Tb_ServiciosTransp
+
+SELECT *
+FROM Tb_ProvinciaDestino
+
+SELECT *
+FROM Tb_tarifa
+WHERE id_tipoTarifa = 2
+
+SELECT *
+FROM Tb_ProvinciaDestino
+
+SELECT *
+FROM Tb_RentaEnvios
+
+SELECT *
+FROM Tb_ServiciosEnvios
+
+SELECT *
+FROM Tb_tarifa
+
+SELECT *
+FROM Tb_tipoTarifa;
+
+SELECT *
+FROM Tb_modalidadMonto;
+
+
+
